@@ -1,0 +1,32 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5250",
+    "RateLimitOptions": {
+      "DisableRateLimitHeaders": false,
+      "QuotaExceededMessage": "Too Many Requests",
+      "HttpStatusCode": 429,
+      "ClientIdHeader": "X-Client-IP"
+    }
+  },
+
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/identity/{url}",
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5011
+        }
+      ],
+      "RateLimitOptions": { 
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s", // Defines the specific time window that this rate limit is acting on.
+        "PeriodTimespan": 1, // Defines the number of seconds we need to wait to request this endpoint after we got the maximum number of requests within the Period.
+        "Limit": 10 // It defines the maximum number of requests within Period property.
+      }
+    }
+  ]
+}
